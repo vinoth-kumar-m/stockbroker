@@ -1,0 +1,176 @@
+
+<div class="col-md-10 col-md-offset-1">
+	<uib-accordion>
+		<div uib-accordion-group class="panel-default"
+				heading="Summary" is-open="true">
+			<div class="row">
+				<div class="col-md-4">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="col-md-6"><label for="name">Name</label></div>
+							<div class="col-md-6">{{user.name}}</div>
+						</div>
+						<div class="col-md-12">
+							<div class="col-md-6"><label for="status">Profit / Loss</label></div>
+							<div class="col-md-6">{{(summary.overAllCurrent >= summary.overAllBuy) ? 'Profit' : 'Loss'}}</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-2">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="col-md-8"><label for="totalStocks">Total Stocks</label></div>
+							<div class="col-md-4">{{ summary.totalStocks }}</div>
+						</div>
+						
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="col-md-6"><label for="buyTotal">Total (Buy)</label></div>
+							<div class="col-md-6">{{ summary.overAllBuy | number : 2 }}</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="row">
+						
+						<div class="col-md-12">
+							<div class="col-md-6"><label for="currentTotal">Total (Market)</label></div>
+							<div class="col-md-6">{{ summary.overAllCurrent | number : 2 }}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</uib-accordion>
+	<uib-accordion>
+		<div uib-accordion-group class="panel-default" heading="Stock Details" is-open="true">
+			<div class="row" ng-if="showInvestorItems">
+				<div class="col-md-12">
+					<div class="col-md-9"></div>
+					<div class="col-md-2"><label for="autoRefresh">Auto Refresh</label> <toggle ng-model="autoRefresh" ng-change="toggleAutoRefresh()"></toggle></div>
+					<div class="col-md-1" style="padding-left:0px;"><button type="button"class="btn btn-primary" style="line-height:20px;" ng-click="buyStock()">Buy Stock</button></div>
+				</div>
+			</div>
+			<br />
+			<table class="table table-striped" border="1">
+				<tr>
+					<th>Symbol</th>
+					<th>Name</th>
+					<th>Buy Date</th>
+					<th>Quantity</th>
+					<th>Buy Price</th>
+					<th>Market Price</th>
+					<th>Total (Buy)</th>
+					<th>Total (Market)</th>
+					<th>Profit / Loss</th>
+					<th ng-if="showInvestorItems">Action</th>
+				</tr>
+				<tr ng-if="userStocks.length == 0">
+					<td colspan="10">No records found</td>
+				</tr>
+				<tr ng-repeat="stock in userStocks  | filter: searchKeyword" ng-if="userStocks.length > 0">
+					<td> {{stock.symbol}} </td>
+					<td> {{stock.name}} </td>
+					<td> {{stock.buyDate | date:'MM/dd/yyyy'}} </td>
+					<td align="right"> {{stock.quantity}} </td>
+					<td align="right"> {{stock.price | number: 2 }} </td>
+					<td align="right"> {{stock.marketPrice | number: 2 }} </td>
+					<td align="right"> {{stock.buyTotal | number: 2 }} </td>
+					<td align="right"> {{stock.currentTotal | number: 2}} </td>
+					<td align="center"> <span ng-if="stock.profitLoss == 'Profit'" class="glyphicon glyphicon-arrow-up"></span> <span ng-if="stock.profitLoss == 'Loss'" class="glyphicon glyphicon-arrow-down"></span> </td>
+					<td ng-if="showInvestorItems"> <button type="button" class="btn btn-primary" style="line-height:1px;" ng-click="sellStock(stock)">Sell</button> </td>
+				</tr>
+			</table>
+		</div>
+	</uib-accordion>
+</div>
+
+<script type="text/ng-template" id="sellStockModal.html">
+	<div class="modal-header">
+		<h3 class="modal-title" id="modal-title">Sell Stock</h3>
+	</div>
+	<div class="modal-body" id="modal-body">
+		<form name="form" role="form">
+			<div class="form-group"">
+				<label for="symbol">Symbol</label> <input type="text"
+					name="symbol" id="symbol" class="form-control"
+					ng-model="stock.symbol" ng-readonly="true" />
+			</div>
+			<div class="form-group"">
+				<label for="name">Name</label> <input type="text"
+					name="name" id="name" class="form-control"
+					ng-model="stock.name" ng-readonly="true" />
+			</div>
+			<div class="form-group"
+				ng-class="{ 'has-error': form.password.$dirty && form.password.$error.required }">
+				<label for="quantity">Quantity</label> <input type="text"
+					name="quantity" id="quantity" class="form-control"
+					ng-model="stock.quantity" required /> <span
+					ng-show="form.quantity.$dirty && form.quantity.$error.required"
+					class="help-block">Quantity is required</span>
+			</div>
+			<div class="form-group"">
+				<label for="price">Price</label> <input type="text"
+					name="price" id="price" class="form-control"
+					ng-model="stock.marketPrice" ng-readonly="true" />
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button type="button" ng-disabled="form.$invalid || dataLoading"
+			class="btn btn-primary" ng-click="sell()">Sell</button>
+		<button type="button" ng-click="cancel()" class="btn btn-success">Cancel</button>
+	
+		<img ng-if="dataLoading"
+			src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+	</div>
+</script>
+
+<script type="text/ng-template" id="buyStockModal.html">
+	<div class="modal-header">
+		<h3 class="modal-title" id="modal-title">Buy Stock</h3>
+	</div>
+	<div class="modal-body" id="modal-body">
+		<form name="form" role="form">
+			<div class="form-group"">
+				<label for="symbol">Stock</label> 
+				<select name="symbol" id="symbol" class="form-control" ng-model="stock.symbol" 
+					ng-options="option.symbol as (option.symbol + ' - ' +  option.name) for option in stocks"
+					ng-change="populate()"></select>
+			</div>
+			<div class="form-group"">
+				<label for="price">Price</label> <input type="text"
+					name="price" id="price" class="form-control"
+					ng-model="stock.marketPrice" ng-readonly="true" />
+			</div>
+			<div class="form-group"">
+				<label for="available">Available</label> <input type="text"
+					name="available" id="available" class="form-control"
+					ng-model="stock.availableShares" ng-readonly="true" />
+			</div>
+			<div class="form-group"
+				ng-class="{ 'has-error': form.password.$dirty && form.password.$error.required }">
+				<label for="quantity">Quantity</label> <input type="text"
+					name="quantity" id="quantity" class="form-control"
+					ng-model="stock.quantity" required ng-change="calculate()"/> <span
+					ng-show="form.quantity.$dirty && form.quantity.$error.required"
+					class="help-block">Quantity is required</span>
+			</div>
+			<div class="form-group"">
+				<label for="price">Total</label> <input type="text"
+					name="total" id="total" ng-model="stock.total" class="form-control" ng-readonly="true" />
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button type="button" ng-disabled="form.$invalid || dataLoading"
+			class="btn btn-primary" ng-click="buy()">Buy</button>
+		<button type="button" ng-click="cancel()" class="btn btn-success">Cancel</button>
+	
+		<img ng-if="dataLoading"
+			src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+	</div>
+</script>

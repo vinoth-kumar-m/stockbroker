@@ -1,0 +1,45 @@
+<html>
+<head>
+	<script src="resources/js/angular.min.js"></script>
+	<script src="resources/js/angular-route.min.js"></script>
+	<script src="resources/js/angular-animate.min.js"></script>
+	<script src="resources/js/ui-bootstrap-tpls-2.5.0.min.js"></script>
+	<script src="resources/js/angular-bootstrap-toggle.min.js"></script>
+	<script src="resources/js/Chart.min.js"></script>
+	<script src="resources/js/angular-chart.min.js"></script>
+	
+	<script src="resources/app/app.js"></script>
+	<script src="resources/app/app-config.js"></script>
+	<script src="resources/app/app-constants.js"></script>
+	
+	<script src="resources/app/service/user-service.js"></script>
+	<script src="resources/app/service/portfolio-service.js"></script>
+	<script src="resources/app/service/stock-exchange-service.js"></script>
+	
+	<script src="resources/app/controller/user-controller.js"></script>
+	<script src="resources/app/controller/portfolio-controller.js"></script>
+	<script src="resources/app/controller/stock-exchange-controller.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="resources/css/bootstrap.sandstone.min.css">
+	<link rel="stylesheet" type="text/css" href="resources/css/angular-bootstrap-toggle.min.css">
+	<link rel="stylesheet" type="text/css" href="resources/css/dtcc.style.css">
+	
+</head>
+<body ng-app="stockbroker">
+	<div ng-controller="RouteController">
+		<div>
+			<nav class="navbar navbar-default" role="navigation">
+				<div class="navbar-header">
+					<a class="navbar-brand" style="font-size: 25px;"> <span>Stock Broker</span></a>
+				</div>
+				<ul class="nav navbar-nav" style="float:right; font-size: 20px;" ng-if="menuItems.length > 0">
+					<li class="dropdown" ng-repeat="menuItem in menuItems"><a
+						href="#{{menuItem.href}}">{{menuItem.title}}</a></li>
+					<li><a ng-click="logout()">Logout</a></li>
+				</ul>
+			</nav>
+		</div>
+		<div ng-view></div>
+	</div>
+</body>
+</html>

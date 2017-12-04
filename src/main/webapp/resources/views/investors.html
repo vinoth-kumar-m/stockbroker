@@ -1,0 +1,25 @@
+<div class="col-md-10 col-md-offset-1">
+	<uib-accordion>
+		<div uib-accordion-group class="panel-default" heading="Investor Details" is-open="true">
+			<table class="table table-striped" border="1">
+				<tr>
+					<th>Name</th>
+					<th>Address</th>
+					<th>City</th>
+					<th>Phone</th>
+					<th>Action</th>
+				</tr>
+				<tr ng-if="users.length == 0">
+					<td colspan="5">No records found</td>
+				</tr>
+				<tr ng-repeat="user in users  | filter: searchKeyword" ng-if="users.length > 0">
+					<td> {{user.name}} </td>
+					<td> {{user.address}} </td>
+					<td> {{user.city}} </td>
+					<td> {{user.phoneno}} </td>
+					<td> <button type="button" class="btn btn-primary" style="line-height:1px;" ng-click="portfolio(user)">Portfolio</button> </td>
+				</tr>
+			</table>
+		</div>
+	</uib-accordion>
+</div>

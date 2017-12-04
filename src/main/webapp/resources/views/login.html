@@ -1,0 +1,103 @@
+<br /> <br /> <br /> <br />
+<div class="col-md-3 col-md-offset-4">
+	<uib-accordion>
+		<div uib-accordion-group class="panel-default"
+			heading="Login" is-open="true">
+			<form name="form" role="form">
+		<div class="form-group"
+			ng-class="{ 'has-error': form.username.$dirty && form.username.$error.required }">
+			<label for="username">Username</label> <input type="text"
+				name="username" id="username" class="form-control"
+				ng-model="user.username" required /> <span
+				ng-show="form.username.$dirty && form.username.$error.required"
+				class="help-block">Username is required</span>
+		</div>
+		<div class="form-group"
+			ng-class="{ 'has-error': form.password.$dirty && form.password.$error.required }">
+			<label for="password">Password</label> <input type="password"
+				name="password" id="password" class="form-control"
+				ng-model="user.password" required /> <span
+				ng-show="form.password.$dirty && form.password.$error.required"
+				class="help-block">Password is required</span>
+		</div>
+		<div class="form-actions">
+			<button type="button" ng-disabled="form.$invalid || dataLoading"
+				class="btn btn-default" ng-click="login()">Login</button>
+			<button type="reset" class="btn btn-success">Reset</button>
+			<img ng-if="dataLoading"
+				src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+			<div style="float:right;">	
+				<a id="signIn" href ng-click="register()">Sign In</a>
+			</div>
+		</div>
+	</form>
+		</div>
+	</uib-accordion>
+</div>
+
+<script type="text/ng-template" id="userRegistration.html">
+	<div class="modal-header">
+		<h3 class="modal-title" id="modal-title">User Registraion</h3>
+	</div>
+	<div class="modal-body" id="modal-body">
+		<form name="form" role="form">
+			<div class="form-group"
+				ng-class="{ 'has-error': form.username.$dirty && form.username.$error.required }">
+				<label for="username">Username</label> <input type="text"
+					name="username" id="username" class="form-control"
+					ng-model="user.username" required /> <span
+					ng-show="form.username.$dirty && form.username.$error.required"
+					class="help-block">Username is required</span>
+			</div>
+			<div class="form-group"
+				ng-class="{ 'has-error': form.password.$dirty && form.password.$error.required }">
+				<label for="password">Password</label> <input type="password"
+					name="password" id="password" class="form-control"
+					ng-model="user.password" required /> <span
+					ng-show="form.password.$dirty && form.password.$error.required"
+					class="help-block">Password is required</span>
+			</div>
+			<div class="form-group"
+				ng-class="{ 'has-error': form.name.$dirty && form.name.$error.required }">
+				<label for="name">Name</label> <input type="text"
+					name="name" id="name" class="form-control"
+					ng-model="user.name" required /> <span
+					ng-show="form.name.$dirty && form.name.$error.required"
+					class="help-block">Name is required</span>
+			</div>
+			<div class="form-group"
+				ng-class="{ 'has-error': form.address.$dirty && form.address.$error.required }">
+				<label for="address">Address</label> <input type="text"
+					name="address" id="address" class="form-control"
+					ng-model="user.address" required /> <span
+					ng-show="form.address.$dirty && form.address.$error.required"
+					class="help-block">Address is required</span>
+			</div>
+			<div class="form-group"
+				ng-class="{ 'has-error': form.city.$dirty && form.city.$error.required }">
+				<label for="city">City</label> <input type="text"
+					name="city" id="city" class="form-control"
+					ng-model="user.city" required /> <span
+					ng-show="form.city.$dirty && form.city.$error.required"
+					class="help-block">City is required</span>
+			</div>
+			<div class="form-group">
+				<label for="phoneno">Phone No</label> <input type="text"
+					name="phoneno" id="phoneno" class="form-control"
+					ng-model="user.phoneno" />
+			</div>
+			<br />
+			<div uib-alert ng-repeat="alert in alerts"
+				ng-class="'alert-' + (alert.type || 'warning')"
+				close="closeAlert($index)">{{alert.msg}}</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button type="button" ng-disabled="form.$invalid || dataLoading"
+			class="btn btn-primary" ng-click="register()">Register</button>
+		<button type="button" ng-click="cancel()" class="btn btn-success">Cancel</button>
+	
+		<img ng-if="dataLoading"
+			src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+	</div>
+</script>

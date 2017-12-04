@@ -1,0 +1,54 @@
+<div class="col-md-10 col-md-offset-1">
+	<uib-accordion>
+		<div uib-accordion-group class="panel-default" heading="Stock Details" is-open="true">
+			<div ng-if="showAdminItems">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="col-md-11"></div>
+						<div class="col-md-1"><button type="button"class="btn btn-primary" ng-click="refresh()">Refresh</button></div>
+					</div>
+				</div>
+				<br/>
+			</div>
+			<table class="table table-striped" border="1">
+				<tr>
+					<th>Symbol</th>
+					<th>Name</th>
+					<th>Launch Date</th>
+					<th>Face Value</th>
+					<th>Total Shares</th>
+					<th>Available Shares</th>
+					<th>Market Price</th>
+					<th>Performance</th>
+					<th>Status</th>
+				</tr>
+				<tr ng-if="stocks.length == 0">
+					<td colspan="10">No records found</td>
+				</tr>
+				<tr ng-repeat="stock in stocks  | filter: searchKeyword" ng-if="stocks.length > 0">
+					<td> {{stock.symbol}} </td>
+					<td> {{stock.name}} </td>
+					<td> {{stock.launchDate | date:'MM/dd/yyyy'}} </td>
+					<td align="right"> {{stock.faceValue | number: 2}} </td>
+					<td align="right"> {{stock.totalShares }} </td>
+					<td align="right"> {{stock.availableShares }} </td>
+					<td align="right"> {{stock.marketPrice | number: 2 }} </td>
+					<td align="center"> <span class="glyphicon glyphicon-object-align-bottom" ng-click="performance(stock)"></span> </td>
+					<td align="right"> {{stock.status}} </td>
+				</tr>
+			</table>
+		</div>
+	</uib-accordion>
+</div>
+
+<script type="text/ng-template" id="stockPerformance.html">
+	<div class="modal-header">
+		<h3 class="modal-title" id="modal-title">{{stock.name}} Performance</h3>
+	</div>
+	<div class="modal-body" id="modal-body">
+		<canvas id="line" class="chart chart-line" chart-data="data"
+			chart-labels="labels" chart-series="series" chart-options="options"
+			chart-dataset-override="datasetOverride" chart-click="onClick">
+		</canvas>
+	</div>
+</script>
